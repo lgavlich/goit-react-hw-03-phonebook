@@ -14,8 +14,8 @@ class App extends Component {
   formSubmit = (data) => {
     console.log(data);
     const { contacts } = this.state;
-    const added = contacts.some((contact) => contact.name === data.name);
-    if (added) {
+    const newContact = contacts.some((contact) => contact.name === data.name);
+    if (newContact) {
       alert(`${data.name} is already in contacts`);
       return;
     }
@@ -31,7 +31,7 @@ class App extends Component {
     }));
   };
 
-  deleteList = (listId) => {
+  deleteItem = (listId) => {
     this.setState((prevState) => ({
       contacts: prevState.contacts.filter((contact) => contact.id !== listId),
     }));
@@ -49,6 +49,20 @@ class App extends Component {
       contact.name.toLowerCase().includes(normalizedFilter)
     );
   };
+  componentDidUpdate(prevPrips, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem("contacts", JSON.stringify(this.state.contacts));
+    }
+  }
+
+  componentDidMount() {
+    const contactList = localStorage.getItem("contacts");
+    const parsedContactList = JSON.parse(contactList);
+
+    if (parsedContactList) {
+      this.setState({ contacts: parsedContactList });
+    }
+  }
 
   render() {
     const { filter } = this.state;
