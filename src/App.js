@@ -31,7 +31,7 @@ class App extends Component {
     }));
   };
 
-  deleteItem = (listId) => {
+  deleteList = (listId) => {
     this.setState((prevState) => ({
       contacts: prevState.contacts.filter((contact) => contact.id !== listId),
     }));
